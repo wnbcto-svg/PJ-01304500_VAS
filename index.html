@@ -421,20 +421,19 @@ function submitData() {
     });
 
     fetch(GAS_URL, {
-      method: "POST",
-      body: params
-    })
-    .then(res => res.text())
-    .then(() => {
-      document.body.innerHTML = `
-        <h2>ご回答ありがとうございました</h2>
-        <p>この画面は閉じてください。</p>
-      `;
-    })
-    .catch(err => {
-      alert("送信に失敗しました");
-      console.error(err);
-    });
+  method: "POST",
+  body: params
+})
+.then(res => res.text())
+.catch(err => {
+  console.error(err);
+})
+.finally(() => {
+  document.body.innerHTML = `
+    <h2>ご回答ありがとうございました</h2>
+    <p>この画面は閉じてください。</p>
+  `;
+});
 
   }, 0);
 }
@@ -448,6 +447,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
