@@ -396,6 +396,14 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbwT05IBt4yH0TRdwEZf0-6U
 
 function submitData() {
 
+ 
+  // ▼ 送信中UI表示
+  document.getElementById("question").style.display = "none";
+  document.querySelector(".vas-wrapper").style.display = "none";
+  document.querySelector(".scale").style.display = "none";
+  document.getElementById("next-btn").style.display = "none";
+  document.getElementById("sending-message").style.display = "block";
+  
   const params = new URLSearchParams();
 
   params.append("subjectId", subjectId);
@@ -431,6 +439,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
