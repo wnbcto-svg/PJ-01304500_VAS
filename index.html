@@ -2,88 +2,336 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <title>VAS質問票</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VAS評価フォーム</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 1em;
-    }
-
-    .container {
-      max-width: 400px;
-      margin: auto;
-    }
-
-    .vas-scale {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .vas-label {
-      width: 80px;
+      margin: 20px;
       text-align: center;
-      font-size: 0.9em;
+    }
+
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 30px;
     }
 
     input[type="range"] {
-      flex: 1;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;   /* ★ これ */
+  display: block;   /* ★ これ */
+}
+
+
+    .scale {
+      display: flex;
+      justify-content: space-between;
+      max-width: 200px;
+      margin: 10px auto 30px;
+      font-size: 0.9em;
     }
+
+    button {
+      padding: 10px 30px;
+      font-size: 1em;
+    }
+
+    /* ===== VAS中央線用 ===== */
+
+.vas-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto 10px;
+}
+
+.vas-wrapper input[type="range"] {
+  width: 100%;
+}
+
+/* 中央の目印線 */
+.vas-center-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 24px;
+  background-color: #555;
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* 操作の邪魔をしない */
+}
+/* ===== range全体の初期化 ===== */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  display: block;
+  background: transparent;
+}
+
+/* ===== スライダーの線 ===== */
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  background: #ccc;
+  border-radius: 3px;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  background: #ccc;
+  border-radius: 3px;
+}
+
+/* ===== ■ つまみ ===== */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #000;
+  border-radius: 0;     /* ← 完全な■ */
+  cursor: pointer;
+  margin-top: -5px;    /* 線の中央に合わせる */
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #000;
+  border-radius: 0;     /* ← 完全な■ */
+  cursor: pointer;
+}
+
+
+
+
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <h2>VAS評価フォーム</h2>
 
-    <label for="subjectId">被験者ID：</label><br>
-    <input type="text" id="subjectId" name="subjectId" readonly><br><br>
+<!-- ID入力画面 -->
+<div id="id-screen" class="container">
+  <h2>被験者IDを入力してください</h2>
+  <input type="text" id="subject-id" placeholder="例：ABC123">
+  <br><br>
+  <button onclick="startQuestionnaire()">開始</button>
+</div>
 
-    <label for="vas">現在の痛みの程度：</label>
-    <div class="vas-scale">
-      <span class="vas-label left">全くない</span>
-      <input type="range" id="vas" name="vas" min="0" max="100" value="50">
-      <span class="vas-label right">非常に強い</span>
-    </div>
+<!-- VAS質問画面 -->
+<div id="vas-screen" class="container" style="display:none;">
 
-    <br>
-    <button onclick="submitForm()">送信</button>
+  <div class="progress" id="progress"></div>
+
+  <div class="question" id="question"></div>
+
+  <div class="vas-wrapper">
+  <input type="range" id="vas" min="0" max="100" value="50">
+  <div class="vas-center-line"></div>
+</div>
+
+  <div class="scale">
+    <span id="scale-left"></span>
+    <span id="scale-right"></span>
   </div>
 
- <script>
-  // URLパラメータからID取得
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
-  document.getElementById('subjectId').value = id || '';
+  <button id="next-btn" onclick="next()">次へ</button>
 
-  function submitForm() {
-    const subjectId = document.getElementById('subjectId').value;
-    const vasValue = document.getElementById('vas').value;
 
-    alert(`ID: ${subjectId}, VAS値: ${vasValue}`);
+<!-- 中間教示画面 -->
+<div id="middle-screen" style="display:none;">
+  <p style="font-size:1.1em; margin:40px 0;">
+    喫食前の質問は以上です。
+  </p>
+  <button onclick="resumeAfterMiddle()">後半の回答を開始する</button>
+</div>
 
-    fetch('https://script.google.com/macros/s/AKfycbze2CtIJLxy5ue1pAIPzKyIs0DItowDgcXOVixEacgsdRY08XFxtI1x_pWSqBjoavgj/exec', {
-      method: 'POST',
-      body: new URLSearchParams({
-        'subjectId': subjectId,
-        'vasValue': vasValue
-      })
-    })
-    .then(response => response.text())
-    .then(result => {
-      alert('送信成功、ブラウザを閉じてください。: ' + result);
-      window.close(); // ウインドウを閉じる
-    })
-    .catch(error => {
-      alert('送信失敗: ' + error);
-    });
+
+</div>
+
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const urlSubjectId = urlParams.get("id");
+  
+let startTime = null;
+  // ===== 質問定義 =====
+  const questions = [
+    {
+      id: "VAS01",
+      text: "今の気分はどうですか？",
+      left: "気分が悪い",
+      right: "快い"
+    },
+    {
+      id: "VAS02",
+      text: "今の幸福度はどのくらいありますか？ ※幸福感とは、「心が満ち足りた状態の高まり」とお考えください。",
+      left: "全くない",
+      right: "ある"
+    },
+    {
+      id: "VAS03",
+      text: "今のほっとした気持ちはどのくらいありますか？ ※ほっとした気持ちとは、「安心する、気持ちが楽になる」とお考えください。",
+      left: "全くない",
+      right: "ある"
+    },
+    
+    {
+      id: "VAS04",
+      text: "今の気分はどうですか？",
+      left: "気分が悪い",
+      right: "快い"
+    },
+    {
+      id: "VAS05",
+      text: "今の幸福度はどのくらいありますか？ ※幸福感とは、「心が満ち足りた状態の高まり」とお考えください。",
+      left: "全くない",
+      right: "ある"
+    },
+   
+    {
+      id: "VAS06",
+      text: "今のほっとした気持ちはどのくらいありますか？ ※ほっとした気持ちとは、「安心する、気持ちが楽になる」とお考えください。",
+      left: "全くない",
+      right: "ある"
+    },
+    {
+    id: "VAS07",
+      text: "今食べたチョコレートのミルク感をどのくらい感じましたか？",
+      left: "全く感じない",
+      right: "感じる"
+    },    
+    {
+      id: "VAS08",
+        text: "今食べたチョコレートのミルク感は好きですか？",
+        left: "嫌い",
+        right: "好き"
+    },
+    {
+      id: "VAS09",
+        text: "今食べたチョコレートの甘さをどのくらい感じましたか？",
+        left: "全く感じない",
+        right: "感じる"
+    },    
+    {
+      id: "VAS10",
+        text: "今食べたチョコレートの甘さは好きですか？",
+        left: "嫌い",
+        right: "好き"
+    },
+    {
+      id: "VAS11",
+        text: "今食べたチョコレートは総合的に好きですか？",
+        left: "嫌い",
+        right: "好き"
+    }
+  ];
+
+
+
+
+let currentIndex = 0;
+  let answers = {};
+  let subjectId = "";
+
+  function startQuestionnaire() {
+    const input = document.getElementById("subject-id").value.trim();
+    if (input === "") {
+      alert("被験者IDを入力してください");
+      return;
+    }
+    subjectId = input;
+    startTime = new Date().toISOString();
+    document.getElementById("id-screen").style.display = "none";
+    document.getElementById("vas-screen").style.display = "block";
+    loadQuestion();
   }
+
+  function loadQuestion() {
+    const q = questions[currentIndex];
+    document.getElementById("question").innerText = q.text;
+    document.getElementById("scale-left").innerText = q.left;
+    document.getElementById("scale-right").innerText = q.right;
+    document.getElementById("progress").innerText =
+      `質問 ${currentIndex + 1} / ${questions.length}`;
+    document.getElementById("vas").value = 50;
+  }
+
+  function next() {
+    const value = document.getElementById("vas").value;
+    answers[questions[currentIndex].id] = value;
+    currentIndex++;
+
+    // ★ 3問目終了時に中間画面
+    if (currentIndex === 3) {
+      showMiddleScreen();
+      return;
+    }
+
+    if (currentIndex < questions.length) {
+      loadQuestion();
+    } else {
+       submitData();
+
+      }
+    }
+  
+
+  function showMiddleScreen() {
+    document.getElementById("question").style.display = "none";
+    document.getElementById("vas").style.display = "none";
+    document.querySelector(".scale").style.display = "none";
+    document.getElementById("next-btn").style.display = "none";
+    document.getElementById("middle-screen").style.display = "block";
+  }
+
+  function resumeAfterMiddle() {
+    document.getElementById("middle-screen").style.display = "none";
+    document.getElementById("question").style.display = "block";
+    document.getElementById("vas").style.display = "block";
+    document.querySelector(".scale").style.display = "flex";
+    document.getElementById("next-btn").style.display = "inline-block";
+    loadQuestion();
+  }
+  // ===== GASへ送信する関数（★追加）=====
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwT05IBt4yH0TRdwEZf0-6UA2faMJg7MBmR7VEUHlaXL21Q6j1_NO0mOK0ApTZF5VQ77g/exec";
+
+function submitData() {
+
+  const params = new URLSearchParams();
+
+  params.append("subjectId", subjectId);
+  params.append("input_start_time", startTime);
+
+  Object.keys(answers).forEach(key => {
+    params.append(key, answers[key]);
+  });
+
+  fetch(GAS_URL, {
+    method: "POST",
+    body: params
+  })
+  .then(res => res.text())
+  .then(() => {
+    document.body.innerHTML = `
+      <h2>ご回答ありがとうございました</h2>
+      <p>この画面は閉じてください。</p>
+    `;
+  })
+  .catch(err => {
+    alert("送信に失敗しました");
+    console.error(err);
+  });
+}
+  
 </script>
-
-
-
 </body>
 </html>
+
 
 
 
