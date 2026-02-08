@@ -327,10 +327,17 @@ function submitData() {
     console.error(err);
   });
 }
+
+window.addEventListener("DOMContentLoaded", () => {
+  if (urlSubjectId) {
+    document.getElementById("subject-id").value = urlSubjectId;
+  }
+});  
   
 </script>
 </body>
 </html>
+
 
 
 
