@@ -137,6 +137,15 @@ input[type="range"]::-moz-range-thumb {
   }
 }
 
+/* ===== タブレット：全体を1.5倍表示 ===== */
+@media (min-width: 768px) and (max-width: 1024px) {
+
+  #vas-screen {
+    transform: scale(1.5);
+    transform-origin: top center;
+  }
+
+}    
 
   </style>
 </head>
@@ -371,6 +380,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
