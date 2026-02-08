@@ -334,17 +334,14 @@ function submitData() {
 
 window.addEventListener("DOMContentLoaded", () => {
   if (urlSubjectId) {
-    const inputField = document.getElementById("subject-id");
-    inputField.value = urlSubjectId;
-
-    // ★ 自動で開始
-    startQuestionnaire();
+    document.getElementById("subject-id").value = urlSubjectId;
   }
 });
   
 </script>
 </body>
 </html>
+
 
 
 
