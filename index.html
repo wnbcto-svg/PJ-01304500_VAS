@@ -101,21 +101,30 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
 }
 
-/* ===== タブレット用拡大指定（★追加）===== */
+/* ===== タブレット用拡大指定（★修正版）===== */
 @media (min-width: 768px) and (max-width: 1024px) {
 
   body {
-    font-size: 1.5em;
+    font-size: 1.4em; /* ← 1.5だと逆にバランス崩れやすい */
   }
 
+  /* ★ 親の制限を解除 */
+  .vas-wrapper,
+  .scale {
+    max-width: 90vw;
+  }
+
+  /* ★ スライダー自体も拡大 */
   input[type="range"] {
-    max-width: 600px;
+    max-width: 90vw;
   }
 
+  /* 中央線 */
   .vas-center-line {
     height: 36px;
   }
 
+  /* つまみ */
   input[type="range"]::-webkit-slider-thumb {
     width: 24px;
     height: 24px;
@@ -362,6 +371,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
