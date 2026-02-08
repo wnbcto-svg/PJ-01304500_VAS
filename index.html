@@ -67,7 +67,6 @@ input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  max-width: 400px;
   margin: 0 auto;
   display: block;
   background: transparent;
@@ -263,8 +262,13 @@ let currentIndex = 0;
 
   function next() {
     const value = document.getElementById("vas").value;
-    answers[questions[currentIndex].id] = value;
-    currentIndex++;
+    if (value === "50") {
+    alert("スライダーを動かして回答してください");
+    return;
+  }
+
+  answers[questions[currentIndex].id] = value;
+  currentIndex++;
 
     // ★ 3問目終了時に中間画面
     if (currentIndex === 3) {
@@ -337,6 +341,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
