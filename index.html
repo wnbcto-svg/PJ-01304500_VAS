@@ -164,6 +164,24 @@ input[type="range"]::-moz-range-thumb {
     max-width: 90vw;
   }
 }
+
+/* ===== 被験者ID入力欄のサイズ調整 ===== */
+#subject-id {
+  width: 100%;
+  max-width: clamp(260px, 80vw, 420px);
+  font-size: 1.2em;
+  padding: 12px 14px;
+  box-sizing: border-box;
+}
+
+/* タブレット以上 */
+@media (min-width: 768px) {
+  #subject-id {
+    max-width: 90vw;
+    font-size: 1.4em;
+    padding: 16px 18px;
+  }
+}
     
   </style>
 </head>
@@ -344,7 +362,7 @@ let currentIndex = 0;
 
   function showMiddleScreen() {
     document.getElementById("question").style.display = "none";
-    document.getElementById("vas").style.display = "none";
+    document.querySelector(".vas-wrapper").style.display = "none";
     document.querySelector(".scale").style.display = "none";
     document.getElementById("next-btn").style.display = "none";
     document.getElementById("middle-screen").style.display = "block";
@@ -398,6 +416,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
