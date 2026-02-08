@@ -396,9 +396,6 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbwT05IBt4yH0TRdwEZf0-6U
 
 function submitData() {
 
- 
-
-
   // ▼ 送信中UI表示
   document.getElementById("question").style.display = "none";
   document.querySelector(".vas-wrapper").style.display = "none";
@@ -406,12 +403,18 @@ function submitData() {
   document.getElementById("next-btn").style.display = "none";
   document.getElementById("sending-message").style.display = "block";
 
-  // ★ ここが重要：描画を1フレーム待つ
+  // ★ 描画を1フレーム待つ
   setTimeout(() => {
 
     const params = new URLSearchParams();
+
     params.append("subjectId", subjectId);
     params.append("input_start_time", startTime);
+
+    // ★ PREをここで追加
+    if (preValue) {
+      params.append("PRE", preValue);
+    }
 
     Object.keys(answers).forEach(key => {
       params.append(key, answers[key]);
@@ -433,7 +436,7 @@ function submitData() {
       console.error(err);
     });
 
-  }, 0); // ← 0msでOK
+  }, 0);
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -445,6 +448,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
