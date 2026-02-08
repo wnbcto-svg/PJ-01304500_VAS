@@ -101,51 +101,56 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
 }
 
-/* ===== タブレット用拡大指定（★修正版）===== */
-@media (min-width: 768px) and (max-width: 1024px) {
+/* ===== タブレット以上（iPad Pro含む）===== */
+@media (min-width: 768px) {
 
   body {
-    font-size: 1.4em; /* ← 1.5だと逆にバランス崩れやすい */
+    font-size: 1.6em;
   }
 
-  /* ★ 親の制限を解除 */
+  .question {
+    font-size: 1.4em;
+  }
+
   .vas-wrapper,
   .scale {
     max-width: 90vw;
   }
 
-  /* ★ スライダー自体も拡大 */
   input[type="range"] {
     max-width: 90vw;
   }
 
-  /* 中央線 */
-  .vas-center-line {
-    height: 36px;
+  /* スライダーの線 */
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 10px;
+  }
+  input[type="range"]::-moz-range-track {
+    height: 10px;
   }
 
   /* つまみ */
   input[type="range"]::-webkit-slider-thumb {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     margin-top: -9px;
   }
-
   input[type="range"]::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
+  }
+
+  /* 中央線 */
+  .vas-center-line {
+    height: 44px;
+    width: 3px;
+  }
+
+  button {
+    font-size: 1.2em;
+    padding: 14px 40px;
   }
 }
-
-/* ===== タブレット：全体を1.5倍表示 ===== */
-@media (min-width: 768px) and (max-width: 1024px) {
-
-  #vas-screen {
-    transform: scale(1.5);
-    transform-origin: top center;
-  }
-
-}    
 
   </style>
 </head>
@@ -380,6 +385,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
