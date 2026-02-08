@@ -397,37 +397,43 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbwT05IBt4yH0TRdwEZf0-6U
 function submitData() {
 
  
+  function submitData() {
+
   // ▼ 送信中UI表示
   document.getElementById("question").style.display = "none";
   document.querySelector(".vas-wrapper").style.display = "none";
   document.querySelector(".scale").style.display = "none";
   document.getElementById("next-btn").style.display = "none";
   document.getElementById("sending-message").style.display = "block";
-  
-  const params = new URLSearchParams();
 
-  params.append("subjectId", subjectId);
-  params.append("input_start_time", startTime);
+  // ★ ここが重要：描画を1フレーム待つ
+  setTimeout(() => {
 
-  Object.keys(answers).forEach(key => {
-    params.append(key, answers[key]);
-  });
+    const params = new URLSearchParams();
+    params.append("subjectId", subjectId);
+    params.append("input_start_time", startTime);
 
-  fetch(GAS_URL, {
-    method: "POST",
-    body: params
-  })
-  .then(res => res.text())
-  .then(() => {
-    document.body.innerHTML = `
-      <h2>ご回答ありがとうございました</h2>
-      <p>この画面は閉じてください。</p>
-    `;
-  })
-  .catch(err => {
-    alert("送信に失敗しました");
-    console.error(err);
-  });
+    Object.keys(answers).forEach(key => {
+      params.append(key, answers[key]);
+    });
+
+    fetch(GAS_URL, {
+      method: "POST",
+      body: params
+    })
+    .then(res => res.text())
+    .then(() => {
+      document.body.innerHTML = `
+        <h2>ご回答ありがとうございました</h2>
+        <p>この画面は閉じてください。</p>
+      `;
+    })
+    .catch(err => {
+      alert("送信に失敗しました");
+      console.error(err);
+    });
+
+  }, 0); // ← 0msでOK
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -439,6 +445,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
