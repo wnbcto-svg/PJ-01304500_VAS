@@ -246,6 +246,7 @@ input[type="range"]::-moz-range-thumb {
 <script>
 const urlParams = new URLSearchParams(window.location.search);
 const urlSubjectId = urlParams.get("id");
+const preValue = urlParams.get("pre");
   
 let startTime = null;
   // ===== 質問定義 =====
@@ -447,6 +448,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
