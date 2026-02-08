@@ -397,46 +397,40 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbwT05IBt4yH0TRdwEZf0-6U
 
 function submitData() {
 
-  // ▼ 送信中UI表示
+  // UI切替
   document.getElementById("question").style.display = "none";
   document.querySelector(".vas-wrapper").style.display = "none";
   document.querySelector(".scale").style.display = "none";
   document.getElementById("next-btn").style.display = "none";
   document.getElementById("sending-message").style.display = "block";
 
-  // ★ 描画を1フレーム待つ
-  setTimeout(() => {
+  // パラメータ作成
+  const params = new URLSearchParams();
+  params.append("subjectId", subjectId);
+  params.append("input_start_time", startTime);
+  if (preValue) params.append("PRE", preValue);
 
-    const params = new URLSearchParams();
+  Object.keys(answers).forEach(key => {
+    params.append(key, answers[key]);
+  });
 
-    params.append("subjectId", subjectId);
-    params.append("input_start_time", startTime);
-
-    // ★ PREをここで追加
-    if (preValue) {
-      params.append("PRE", preValue);
-    }
-
-    Object.keys(answers).forEach(key => {
-      params.append(key, answers[key]);
-    });
-
+  // ★ 通信は投げるだけ（結果を待たない）
+  try {
     fetch(GAS_URL, {
-  method: "POST",
-  body: params
-})
-.then(res => res.text())
-.catch(err => {
-  console.error(err);
-})
-.finally(() => {
-  document.body.innerHTML = `
-    <h2>ご回答ありがとうございました</h2>
-    <p>この画面は閉じてください。</p>
-  `;
-});
+      method: "POST",
+      body: params
+    });
+  } catch (e) {
+    console.log(e);
+  }
 
-  }, 0);
+  // ★ FileMaker用：一定時間後に必ず完了画面へ
+  setTimeout(() => {
+    document.body.innerHTML = `
+      <h2>ご回答ありがとうございました</h2>
+      <p>この画面は閉じてください。</p>
+    `;
+  }, 1500);
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -448,6 +442,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
