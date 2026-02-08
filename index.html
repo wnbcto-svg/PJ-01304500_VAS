@@ -17,21 +17,15 @@
       margin-bottom: 30px;
     }
 
-    input[type="range"] {
-  width: 100%;
-  max-width: 200px;
-  margin: 0 auto;   /* ★ これ */
-  display: block;   /* ★ これ */
-}
+    
 
 
     .scale {
-      display: flex;
-      justify-content: space-between;
-      max-width: 200px;
-      margin: 10px auto 30px;
-      font-size: 0.9em;
-    }
+  display: flex;
+  justify-content: space-between;
+  margin: 10px auto 30px;
+  font-size: 0.9em;
+}
 
     button {
       padding: 10px 30px;
@@ -40,15 +34,12 @@
 
     /* ===== VAS中央線用 ===== */
 
-.vas-wrapper {
-  position: relative;
+.vas-wrapper,
+.scale {
   width: 100%;
-  max-width: 200px;
-  margin: 0 auto 10px;
-}
-
-.vas-wrapper input[type="range"] {
-  width: 100%;
+  max-width: clamp(260px, 80vw, 420px);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* 中央の目印線 */
@@ -62,11 +53,13 @@
   transform: translate(-50%, -50%);
   pointer-events: none; /* 操作の邪魔をしない */
 }
-/* ===== range全体の初期化 ===== */
+
+/* ===== range全体の初期化（唯一の指定） ===== */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
+  max-width: clamp(260px, 80vw, 420px);
   margin: 0 auto;
   display: block;
   background: transparent;
@@ -85,23 +78,22 @@ input[type="range"]::-moz-range-track {
   border-radius: 3px;
 }
 
-/* ===== ■ つまみ ===== */
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 16px;
   height: 16px;
   background: #000;
-  border-radius: 0;     /* ← 完全な■ */
+  border-radius: 0;
   cursor: pointer;
-  margin-top: -5px;    /* 線の中央に合わせる */
+  margin-top: -5px;
 }
 
 input[type="range"]::-moz-range-thumb {
   width: 16px;
   height: 16px;
   background: #000;
-  border-radius: 0;     /* ← 完全な■ */
+  border-radius: 0;
   cursor: pointer;
 }
 
@@ -341,6 +333,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
