@@ -182,7 +182,19 @@ input[type="range"]::-moz-range-thumb {
     padding: 16px 18px;
   }
 }
-    
+/* ===== ID入力画面のレイアウト統一 ===== */
+#id-screen {
+  width: 100%;
+  max-width: clamp(260px, 80vw, 420px);
+  margin: 0 auto;
+}
+
+/* タブレット以上 */
+@media (min-width: 768px) {
+  #id-screen {
+    max-width: 90vw;
+  }
+}    
   </style>
 </head>
 
@@ -361,21 +373,21 @@ let currentIndex = 0;
   
 
   function showMiddleScreen() {
-    document.getElementById("question").style.display = "none";
-    document.querySelector(".vas-wrapper").style.display = "none";
-    document.querySelector(".scale").style.display = "none";
-    document.getElementById("next-btn").style.display = "none";
-    document.getElementById("middle-screen").style.display = "block";
-  }
+  document.getElementById("question").style.display = "none";
+  document.querySelector(".vas-wrapper").style.display = "none";
+  document.querySelector(".scale").style.display = "none";
+  document.getElementById("next-btn").style.display = "none";
+  document.getElementById("middle-screen").style.display = "block";
+}
 
-  function resumeAfterMiddle() {
-    document.getElementById("middle-screen").style.display = "none";
-    document.getElementById("question").style.display = "block";
-    document.getElementById("vas").style.display = "block";
-    document.querySelector(".scale").style.display = "flex";
-    document.getElementById("next-btn").style.display = "inline-block";
-    loadQuestion();
-  }
+function resumeAfterMiddle() {
+  document.getElementById("middle-screen").style.display = "none";
+  document.getElementById("question").style.display = "block";
+  document.querySelector(".vas-wrapper").style.display = "block";
+  document.querySelector(".scale").style.display = "flex";
+  document.getElementById("next-btn").style.display = "inline-block";
+  loadQuestion();
+}
   // ===== GASへ送信する関数（★追加）=====
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwT05IBt4yH0TRdwEZf0-6UA2faMJg7MBmR7VEUHlaXL21Q6j1_NO0mOK0ApTZF5VQ77g/exec";
 
@@ -416,6 +428,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
