@@ -152,6 +152,19 @@ input[type="range"]::-moz-range-thumb {
   }
 }
 
+@media (min-width: 768px) {
+
+  /* clamp を解除して広げる */
+  .vas-wrapper,
+  .scale {
+    max-width: 90vw;
+  }
+
+  input[type="range"] {
+    max-width: 90vw;
+  }
+}
+    
   </style>
 </head>
 
@@ -385,6 +398,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
 
 
